@@ -1,0 +1,138 @@
+本机公网ip
+
+curl 发送http请求
+
+```shell
+curl ifconfig.me
+```
+
+查看端口是否被占用
+
+```shell
+lsof -i:81
+ ss -tunlp |grep 15001
+```
+
+查询本机系统
+
+```shell
+cat /etc/os-release
+```
+
+更新docker-compose
+
+```sh
+docker-compose up -d
+```
+
+列出所用docker下的容器
+
+```shell
+docker ps
+docker logs
+docker images
+```
+
+显示有关 CPU 和系统架构的信息
+
+```shell
+lscpu
+```
+
+网路下载工具
+
+```shell
+wget https://example.com/file.txt
+```
+
+通过指定的代理地址和端口号进行网络连接
+
+```shell
+curl --proxy http://127.0.0.1:7890 http://www.example.com
+```
+
+Debian系统
+
+```shell
+sudo apt-get update #更新源
+sudo apt-get install unzip #按照unzip
+```
+
+设定变量
+
+目录/root/.bashrc
+
+```shell
+alias proxy="export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890"
+alias unproxy="unset http_proxy;unset https_proxy;"
+```
+
+创建容器
+
+```shell
+docker run -d --
+```
+
+进入容器
+
+```shell
+docker exec -it 6093e29d22e5  /bin/bash(/bin/sh) 
+```
+
+### clash
+
+创建容器+映射文件
+
+```shell
+docker run -d --name clash -p 7890:7890 -p 7891:7891 -p 9090:9090 -v /opt/clash/config.yaml:/root/.config/clash/config.yaml -v /opt/clash/ui:/opt/clash/ui dreamacro/clash
+```
+
+清空dns缓存命令：
+
+```shell
+ipconfig/flushdns
+```
+
+安装数据库
+
+```shell
+docker pull mysql:5.7
+docker run -p 3306:3306 --name mysql \
+-v /mydata/mysql/log:/var/log/mysql \
+-v /mydata/mysql/data:/var/lib/mysql \
+-v /mydata/mysql/conf:/etc/mysql/conf.d \
+-e MYSQL_ROOT_PASSWORD=root \
+-d mysql:5.7
+```
+
+
+
+显示路由
+
+```shell
+route print
+```
+
+```shell
+tracert -h  ip   # 显示经过路由
+```
+
+```shell
+ping ip
+```
+
+```shell
+telnet ip + port
+```
+
+```shell
+curl https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d '{
+     "model": "gpt-3.5-turbo",
+     "messages": [{"role": "user", "content": "Say this is a test!"}],
+     "temperature": 0.7
+   }'
+```
+
