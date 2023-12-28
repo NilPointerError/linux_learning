@@ -39,6 +39,18 @@ docker images
 lscpu
 ```
 
+显示网卡信息
+
+```shell
+ifconfig
+```
+
+查看ip设置
+
+```shell
+cat /etc/sysconfig/network-scripts/ifcfg-ens33
+```
+
 网路下载工具
 
 ```shell
@@ -104,8 +116,6 @@ docker run -p 3306:3306 --name mysql \
 -e MYSQL_ROOT_PASSWORD=root \
 -d mysql:5.7
 ```
-
-
 
 显示路由
 
