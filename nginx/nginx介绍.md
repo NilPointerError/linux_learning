@@ -12,19 +12,19 @@
 2.反向代理
 客户端将请求发送到反向代理服务器，由反向代理服务器转发到目标服务器，再从目标服务器返回数据给客户端。反向代理服务器和目标服务器对外是一个服务器，从而隐藏了真实服务器ip地址
 
-![image-20240305104359903](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240305104359903.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240305104359903.png)
 
 ##### 3、负载均衡
 
 增加服务器数量，然后将请求分发到各个服务器上，将原先请求集中到单个服务器上的情况改为将请求分发到多个服务器上，将负载分发（平均分发？）到不同的服务器，就是负载均衡
 
-![image-20240305104454776](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240305104454776.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240305104454776.png)
 
 ##### 4、动静分离
 
 为了加快网站的解析速度，可以把动态页面和静态页面由不同的服务器来解析。nginx处理静态页面，tomcat处理动态页面
 
-<img src="C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240305104208336.png" alt="image-20240305104208336"  />
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240305104208336.png)
 
 #### nginx安装
 
@@ -87,13 +87,13 @@ apache tomcat下载解压完后
 
 1、需求：访问www.123.com实际上访问到tomcat网站
 
-![image-20240305160228837](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240305160228837.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240305160228837.png)
 
 注意：只需要开放80端口，不需要开放8080端口
 
 配置信息：
 
-![image-20240307153536983](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240307153536983.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240307153536983.png)
 
 2、需求：不同的路径转发到不同的端口
 
@@ -103,7 +103,7 @@ apache tomcat下载解压完后
 
 配置信息：
 
-![image-20240307153440273](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240307153440273.png)
+![image-20240307153440273](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240307153440273.png)
 
 
 
@@ -117,7 +117,7 @@ apache tomcat下载解压完后
 
 配置信息：
 
-![image-20240307160824714](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240307160824714.png)
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240307160824714.png"  />
 
 
 
@@ -149,11 +149,7 @@ weight代表权重默认为1，权重越高被分配的客户端越多
 
 配置信息：
 
-<img src="C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240308135314669.png" alt="image-20240308135314669" style="zoom: 67%;" />
-
-
-
-
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240308135314669.png" style="zoom:67%;" />
 
 tomcat：
 
@@ -165,7 +161,7 @@ tomcat是一种web应用服务器，可以响应html页面的请求，它还是�
 
 ##### 主备模式
 
-![image-20240308170632787](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240308170632787.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240308170632787.png)
 
 准备两台服务器，需要安装nginx、keepalived
 
@@ -175,11 +171,11 @@ tomcat是一种web应用服务器，可以响应html页面的请求，它还是�
 
 主：
 
-![image-20240308171216317](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240308171216317.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240308171216317.png)
 
 从：
 
-![image-20240308171115822](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240308171115822.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240308171115822.png)
 
 脚本文件：
 
@@ -187,15 +183,13 @@ tomcat是一种web应用服务器，可以响应html页面的请求，它还是�
 
 不能启动切换到另一个服务器
 
-![image-20240308171252104](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240308171252104.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240308171252104.png)
 
 #### nginx的原理解析
 
-![image-20240308173826367](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240308173826367.png)
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240308173826367.png)
 
-![image-20240308174202710](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240308174202710.png)
-
-
+![](https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240308174202710.png)
 
 ##### 一个master和多个worker的好处
 
