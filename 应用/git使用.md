@@ -44,23 +44,19 @@ git reset --hard <idNo> #版本切换、回退（本地库）
 
 当master分支也有修改时，master分支合并hot-fix分支时会出现冲突合并，这时需要我们手动合并分支，即找到冲突的文件手动修改保存后再提交，过程如下：
 
-<img src="C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240313135324047.png" alt="image-20240313135324047" style="zoom: 50%;" />
-
-
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313135324047.png" style="zoom:50%;" />
 
 #### 团队协作
 
 - 团队内协作
 
-<img src="C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240313141829186.png" alt="image-20240313141829186" style="zoom: 33%;" />
-
-
+  <img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313141829186.png" style="zoom:33%;" />
 
 所在库点击settings邀请别人加入并分享链接：https://github.com/NilPointerError/linux_learning/invitations
 
 - 跨团队协作
 
-<img src="C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240313141905442.png" alt="image-20240313141905442" style="zoom: 50%;" />
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313141905442.png" alt="image-20240313141905442" style="zoom: 50%;" />
 
 
 
@@ -111,7 +107,7 @@ ssh -T git@gitee.com
 
 idea设置git
 
-<img src="C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20240313170458396.png" alt="image-20240313170458396" style="zoom: 40%;" />
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313170458396.png" alt="image-20240313170458396" style="zoom: 40%;" />
 
 #### gitlab
 
