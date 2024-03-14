@@ -44,19 +44,19 @@ git reset --hard <idNo> #版本切换、回退（本地库）
 
 当master分支也有修改时，master分支合并hot-fix分支时会出现冲突合并，这时需要我们手动合并分支，即找到冲突的文件手动修改保存后再提交，过程如下：
 
-<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313135324047.png" style="zoom:50%;" />
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313135324047.png" width="600px" height="500px" />
 
 #### 团队协作
 
 - 团队内协作
 
-  <img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313141829186.png" style="zoom:33%;" />
+  <img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313141829186.png" width="700px" />
 
 所在库点击settings邀请别人加入并分享链接：https://github.com/NilPointerError/linux_learning/invitations
 
 - 跨团队协作
 
-<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313141905442.png" alt="image-20240313141905442" style="zoom: 50%;" />
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313141905442.png" alt="image-20240313141905442" width="700px" />
 
 
 
@@ -107,7 +107,19 @@ ssh -T git@gitee.com
 
 idea设置git
 
-<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313170458396.png" alt="image-20240313170458396" style="zoom: 40%;" />
+<img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240313170458396.png" alt="image-20240313170458396" width="800px" />
+
+
+
+reset：使用 reset 的方式直接把 HEAD 以及 MASTER 一起拉回那个版本，并且会丢失目标版本之后的内容，虽然可以通过 reflog 找到后面的版本，但是这种方式比较强烈的，可能会造成数据丢失
+
+而 IDEA 中，使用的是 git checkout -b <branch-name> <commit> 的方式，这里 <commit> 指的是版本号；等再切回 master 的时候，它还会使用 git branch -d 的方式销毁它临时创建的分支
+
+
+
+回滚应该用下面的reset，再选择reset模式（视频没有讲soft、mixed和hard的区别），按视频中的使用checkout进行回退是很危险的，其实checkout的本意是移动HEAD，只是后接分支名可以直接切换分支，接版本号可以直接让HEAD指向某版本，但是如果让HEAD直接指向一个版本，再进行提交应该是很危险的操作。
+
+checkout就是看一眼, 如要切换版本并修改, 用reset(真 · 回滚, 删除版本之后的commit), 或者revert(重做, 保留所有commit)
 
 #### gitlab
 
