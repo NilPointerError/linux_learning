@@ -192,7 +192,100 @@ docker run --rm -d -p80:80 --name nginx_vol -v nginx-html:/usr/share/nginx/html 
 docker run --rm -d -p80:80 --name nginx_vol -v /usr/local/nginx-1.6/html:/usr/share/nginx/html nginx
 ```
 
+#### 网络 network
 
+- 是什么？
+
+
+是docker对容器网络隔离的一项技术，提供了多种不同的模式供用户使用，选择不同的网络模式来实现容器网络的互通以及彻底的隔离
+
+- 为什么需要？
+
+  - 容器间的网络隔离
+
+
+  - 实现部分容器之间的网络共享
+
+  - 管理多个子网下容器的ip 
+
+
+- 能干什么？
+
+  - 提供了多种模式，可以定制化的为每个容器置顶不同的网络
+
+
+  - 自定义网络模式，划分不同的子网以及网关、dns等配置
+
+  - 网络互通  
+    - 实现不同子网之间的网络互通，
+    - 基于容器名（主机名）网络访问
+
+
+- 网络模式
+
+
+```
+docker network ls
+```
+
+bridge（默认）：在主机中创建一个docker0的虚拟网桥，在docker0创建一对虚拟网卡，有一半在主机上vethxxx，还有一半在容器内eth0
+
+容器间通信需要知道对应的ip地址
+
+host：容器不再拥有自己的网络空间，而是直接与主机共享网络空间，那么基于该模式创建的容器对应的ip实际就是与主机同一个子网，同一个网段。
+
+none：dockers会拥有自己的网络空间，不与主机共享，在这个网络模式下的容器，不会被分配网卡、IP、路由等相关信息。
+
+特点：完全隔离，与外部任何机器都无网络访问，只有自己的IO 本地网络127.0.0.1
+
+container：不会创建自己的网络空间，与其他容器共享网络空间，直接使用指定容器的ip/端口等。
+
+自定义（推荐）：不使用docker自带的网络模式，自己去定制化自己特有的网络模式
+
+```
+docker network ls
+docker network create --driver bridge --subnet 192.168.133.0/24 --gateway 192.168.133.1 wolfcode
+docker network  inspect wolfcode
+docker run -d --rm -P --name nginx_network1 --net wolfcode centos ping 127.0.0.1
+docker exec -it nginx_network1 ping nginx_network2
+docker network connect wolfcode net1 #把net1加入到wolfcode网络实现跨网络通信
+```
+
+#### dockerfile
+
+- 是什么？
+
+docker为我们提供的一个用于自定义构建镜像的一个配置文件：描述如何构建一个对象
+
+利用docker提供的build命令，指定dockerfile文件，就可以按照配置的内容将镜像构建出来
+
+- 为什么需要？
+
+作为开发者需要将自己开发好的项目打包成docker镜像，便于后面直接作为docker容器运行
+
+作为运维人员需要构建更精确的基础设施服务镜像，满足公司的需要以及尽可能减少冗余的功能占用过多的资源
+
+- 能干什么？
+  - 可以自定义镜像内容
+  - 构建公共镜像减少其他镜像配置
+  - 开源程序的快速部署
+  - 实现企业内部项目的快速交付
+
+commit命令
+
+基于一个现有的容器，构建一个新的镜像
+
+```shell
+docker commit -a="wolfcode" -m="first image" centos7 mycentos:7
+
+OPTIONS：
+-a：镜像的作者
+-c：使用 Dockerfile 指令来构建镜像
+-m：提交时的描述
+-p：在 commit 时暂停容器
+```
+
+build命令
 
 #### docker-compose
 
