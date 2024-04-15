@@ -287,6 +287,109 @@ OPTIONS：
 
 build命令
 
+编写dockerfile构建镜像
+
+```
+docker build -t <name> <dockerfile dir>  #构建镜像
+```
+
+
+
+```shell
+# 先指定当前镜像的基础镜像是什么
+FROM openjdk:8
+# 描述这个镜像的作者，以及联系方式
+MAINTAINER
+# 镜像的标签信息
+LABEL version="1.0"
+LABEL description=“这是我的第一个dockerfile”
+#环境变量配置
+ENV JAVA_ENV dev
+# 构建镜像是，需要执行的shell命令
+RUN ls -al
+RUN mkdir /www/dockerfile/test
+# 将主机中的指定文件复制到容器的目标位置
+ADD /www/wolfcode.cn/index.html /www/server
+ADD ["/www/wolfcode.cn/index.html", "/www/server"]
+# 设置容器中的工作目录，如果该目录不存在，那么会自己创建
+WORKDIR /app
+# 在设置完工作目录后，执行pwd命令，打印的目录就是/app
+RUN pwd
+# 镜像数据卷绑定，将主机中的指定目录挂载到容器中
+VOLUME ["/www/wolfcode.cn"]
+# 设置容器启动后要暴露的端口
+EXPOSE 8080
+# 容器启动时执行的命令
+# CMD
+# ENTRYPOINT ping 127.0.0.1
+ENTRYPOINT ["sh", "-c", "ping 127.0.0.1"]
+```
+
+springboot项目镜像配置
+
+```shell
+# 关联基础镜像 =>jdk
+FROM openjdk:8
+# 将项目 jar包加入到容器中
+ADD *.jar /app.jar
+
+# 配置项目环境变量
+ENV APP_OPTS=""
+# JVM 环境变量
+ENV JVM_OPTS="-Duser.timezone=Asia/Shanghai -Xms128m -Xmx128m"
+
+#暴露端口
+EXPOSE 8888
+
+# 设置启动时命令
+ENTRYPOINT ["sh", "-c", "java $JVM_OPTS -jar /app.jar $APP_OPTS"]
+```
+
+springweb项目镜像配置
+
+```shell
+FROM tomcat:9.0
+
+WORKDIR /usr/local/tomcat/webapps
+
+ADD *.war ROOT.war
+
+ENTRYPOINT ["sh", "-c", "../bin/catalina.sh run"]
+```
+
+nginx镜像配置
+
+```shell
+# 设置基础镜像
+FROM centos:7
+# 镜像的维护人
+MAINTAINER npe
+
+RUN yum -y install wget  gcc gcc-c++ make libtool zlib zlib-devel openssl openssl-devel pcre pcre-devel
+
+WORKDIR /usr/local/src/
+# 添加源文件（自动解压）
+ADD nginx-1.6.3.tar.gz /usr/local/src
+
+WORKDIR /usr/local/src/nginx-1.6.3
+
+RUN ./configure --prefix=/usr/local/nginx-1.6 --with-pcre  --with-http_stub_status_module --with-http_ssl_module  --with-http_gzip_static_module --with-http_realip_module
+
+RUN make && make install
+# 以前台方式运行，挂起容器
+RUN echo 'daemon off;' >> /usr/local/nginx-1.6/conf/nginx.conf
+
+# 环境变量
+# 将 /usr/local/nginx/sbin 添加到 PATH 环境变量的开头
+ENV PATH /usr/local/nginx-1.6/sbin:$PATH
+
+EXPOSE 80
+# 添加自定义页面
+ADD index.html /usr/local/nginx-1.6/html
+
+CMD ["nginx"]
+```
+
 #### docker-compose
 
 更新docker-compose
