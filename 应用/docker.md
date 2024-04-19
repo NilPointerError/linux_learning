@@ -1,6 +1,6 @@
-#### 认识docker
+### 认识docker
 
-##### 没有docker产生的问题
+#### 没有docker产生的问题
 
 - 配置繁琐
 
@@ -14,7 +14,7 @@
 
 手动安装业务服务、基础服务
 
-##### 概念
+#### 概念
 
 docker是一种容器引擎，管理容器的生命周期
 
@@ -24,7 +24,7 @@ docker是一种容器引擎，管理容器的生命周期
 
 镜像仓库：存放各个镜像，对镜像进行统一管理
 
-##### 容器与虚拟机区别
+#### 容器与虚拟机区别
 
 资源损耗、启动时间
 
@@ -32,7 +32,7 @@ docker是一种容器引擎，管理容器的生命周期
 
 虚拟机又新创建了一套操作系统和内核
 
-##### docker架构
+#### docker架构
 
 - docker client 客户端
 
@@ -50,7 +50,7 @@ engine：容器引擎，真正负责执行对应的任务
 
 阿里云docker镜像仓库
 
-#### docker安装
+### docker安装
 
 - 要求
 
@@ -84,6 +84,7 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 }
 EOF
 
+systemctl daemon-reload
 # 启动docker引擎并设置开机启动
 sudo systemctl start docker
 sudo systemctl enable docker
@@ -114,7 +115,7 @@ sudo yum install -y docker-ce-18.03.0.ce
 sudo systemctl start docker
 ```
 
-#### docker基本命令
+### docker基本命令
 
 - 镜像操作
 
@@ -125,6 +126,7 @@ dockers -v
 docker pull openjdk:18#拉取镜像
 docker images #查看本地镜像
 docker rmi <IMAGE ID> #删除镜像
+docker info  #配置信息
 ```
 
 - 容器操作
@@ -159,7 +161,7 @@ docker exec -it <IMAGE NAME>  /bin/bash(/bin/sh) #进入容器内部
 
 <img src="https://raw.githubusercontent.com/NilPointerError/MdImage/main/img/image-20240315134952262.png" alt="image-20240315134952262" width="700" />
 
-#### 数据卷
+### 数据卷
 
 作用：关联容器内与容器外的文件数据，容器删除后，数据还存在。实现在容器外更改生效。
 
@@ -192,7 +194,7 @@ docker run --rm -d -p80:80 --name nginx_vol -v nginx-html:/usr/share/nginx/html 
 docker run --rm -d -p80:80 --name nginx_vol -v /usr/local/nginx-1.6/html:/usr/share/nginx/html nginx
 ```
 
-#### 网络 network
+### 网络 network
 
 - 是什么？
 
@@ -242,7 +244,7 @@ container：不会创建自己的网络空间，与其他容器共享网络空�
 
 自定义（推荐）：不使用docker自带的网络模式，自己去定制化自己特有的网络模式
 
-```
+```shell
 docker network ls
 docker network create --driver bridge --subnet 192.168.133.0/24 --gateway 192.168.133.1 wolfcode
 docker network  inspect wolfcode
@@ -251,7 +253,7 @@ docker exec -it nginx_network1 ping nginx_network2
 docker network connect wolfcode net1 #把net1加入到wolfcode网络实现跨网络通信
 ```
 
-#### dockerfile
+### dockerfile
 
 - 是什么？
 
@@ -287,13 +289,11 @@ OPTIONS：
 
 build命令
 
-编写dockerfile构建镜像
-
 ```
-docker build -t <name> <dockerfile dir>  #构建镜像
+docker build -t <image name> <dockerfile dir>  #构建镜像
 ```
 
-
+编写dockerfile
 
 ```shell
 # 先指定当前镜像的基础镜像是什么
@@ -390,28 +390,135 @@ ADD index.html /usr/local/nginx-1.6/html
 CMD ["nginx"]
 ```
 
-#### docker-compose
+### 镜像仓库 Registry
 
-更新docker-compose
+- 作用
 
-```sh
-docker-compose up -d
-```
+  - 实现快速交付，可以更方便在其他机器上下载镜像运行容器
 
-列出所用docker下的容器
+
+  - 可以存储公司内部私有镜像，避免暴露到外网
+
+  - 提升镜像下载速度
+
+#### Docker Hub
+
+#### Aliyun
+
+阿里云私有仓库的拉取与上传
+
+#### Nexus
+
+docker方式搭建私有镜像仓库
 
 ```shell
-docker ps
-docer-compose ps
+docker run -d --restart=always -p 8868:8081 -p 5001:5001 -p5000:5000   --name nexus -v /opt/docker/nexus:/nexus-data sonatype/nexus3
 
-docker images
+cat /opt/docker/nexus/admin.password
+
+docker login -u admin 192.168.200.158:5000
+docker tag efa77f318784 192.168.200.158:5000/npenginx
+#推送
+docker push 192.168.200.158:5000/npenginx
+#拉取
+docker pull 192.168.200.158:5000/npenginx
 ```
 
+#### Harbor
+
+除了DockerHub以外最早的一个比较受欢迎的Docker企业级Registry服务器
+
+### 容器编排
+
+- 是什么？
+
+对容器生命周期的管理，对容器的生命周期进行更快速方便的方式管理。
+
+- 为什么需要？（能干什么？）
+  - 依赖管理，当一个容器必须再另一个容器运行完成后，才能运行时，就需要进行依赖管理
+  - 副本数控制，容器有时候也需要集群，快速地对容器集群进行弹性伸缩
+  - 配置共享，通过配置文件统一描述需要运行的服务相关信息，自动化的解析配置内容，并构建对应的服务
+
+#### docker-compose
+
+单机环境的容器编排
+
+- 安装
 
 
+```shell
+sudo curl -L "http://mirrors.aliyun.com/docker-toolbox/linux/compose/1.21.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+
+将可执行权限应用于二进制文件：
+
+```shell
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+创建软链：
+
+```shell
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+
+测试是否安装成功：
+
+```shell
+docker-compose --version
+```
+
+**注意**： 对于 alpine，需要以下依赖包： py-pip，python-dev，libffi-dev，openssl-dev，gcc，libc-dev，和 make。
+
+- docker-compose.yml 配置文件
+
+https://docs.docker.com/compose/compose-file/compose-file-v2/
+
+示例：
+
+```yaml
+version: "2.1"
+services:
+  nginx-demo:
+    image: "nginx"
+    restart: "always"
+    networks:
+      - npe_net
+    volumes:
+      - nginx_vol-html:/usr/share/nginx/html
+    environment:
+      APP_ENV: dev
+    dns:
+      - 114.114.115.115
+    ports:
+      - 80:80
+
+networks:
+  npe_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 188.18.0.0/16
+          gateway: 188.18.0.1
+
+volumes:
+  nginx_vol-html:
+```
+
+- 常用命令
 
 
+```shell
+docker-compose up -d #更新容器配置并重启
+docker-compose ps #列出
+docker-compose create <service name> 
+docker-compose scale <service name>=3 #弹性扩容缩容
+```
 
+#### Swarm
+
+docker官方提供的容器编排项目，swarm可以在多个服务器或主机上创建多个容器集群服务
 
 
 
