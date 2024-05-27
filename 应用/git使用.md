@@ -4,9 +4,11 @@ git是一个免费、开源的分布式版本控制工具。
 
 git占空间小，具有本地库、暂存区和多个工作流分支等特点
 
+
+
 git bash 这个工具的本质，它是在 Windows 操作系统里面，安装了一个虚拟的 Linux bash shell 程序，为 git 的命令行功能提供环境。所以，这个 git bash 其实是一个假的 bash，是在 Windows 里面模拟 bash shell 环境的虚拟 bash。第三，虚拟 bash 里面虚拟了一个 Linux 环境，它有一个虚拟的家目录，这个家目录就读取 Windows 操作系统配置的用户根路径，默认是C:\Users\{当前登录的Windows账户名}
 
-分布式与集中式版本控制工具区别？
+#### 分布式与集中式版本控制工具区别？
 
 集中式版本控制工具：SVN等。具有一个单一的中央服务器
 
@@ -30,7 +32,33 @@ git restore xxx #恢复文件到暂存区
 git rm --cached <file>  #弹出暂存区（取消跟踪）
 git commit -m "message" <file>  #提交暂存区的文件到本地库
 git log/ git reflog#查看本地库提交日志
-git reset --hard <idNo> #版本切换、回退（本地库）
+git show <commit> #查看单个commit的详细内容
+git diff #查看任意两个commit之间的差异
+
+# 回退commit的三种方法 
+git reset --soft HEAD^
+HEAD^ 意思是上一个版本，也可以写成 HEAD~1
+如果进行了 2 次 commit，都想撤回，可以使用 HEAD~2
+1.
+git reset --mixed HEAD^ #撤销 commit、并撤销 git add. 操作、不撤销修改代码
+git reset HEAD^  #效果和 git reset --mixed HEAD^ 一样，--mixed 是默认参数
+以上操作将把HEAD指针移动到父提交，但不会改变工作目录中的文件，修改将被保留。
+2. git reset --soft HEAD^ #撤销 commit、不撤销git add .
+3. 
+git reset --hard HEAD^ #撤销 commit、撤销 git add . 操作、撤销修改代码
+这个命令将HEAD指针移动到当前提交的父提交，并且使用--hard选项会使工作目录中的文件恢复到这个父提交的状态；
+这意味着所有自上次提交以来的未提交的修改都将被删除；
+如果想保留这些修改，可以使用git stash命令来保存它们，然后在需要的时候再应用这些修改。
+顺便提一嘴，如果想要修改 commit 注释，可以执行git commit --amend，此时会进入默认vim 编辑器，修改注释完毕后保存就好了。
+
+
+git remote -v #查看当前远程地址别名
+git remote add origin https://github.com/NilPointerError/test.git #添加远程库
+g
+git push 远程地址别名 本地分支 #推送本地分支到远程库
+git push <remote> <local_branch>:<remote_branch>  #指定分支推送
+git pull 远程地址别名 远程分支 -> git fetch&&git merge #拉取
+git clone  https://github.com/NilPointerError/test.git #克隆远程库到本地（不需要登录）
 ```
 
 #### git分支
@@ -62,13 +90,6 @@ git reset --hard <idNo> #版本切换、回退（本地库）
 
 #### github
 
-````shell
-git remote -v #查看当前远程地址别名
-git remote add origin https://github.com/NilPointerError/test.git #添加远程库
-git push 远程地址别名 本地分支 #推送本地分支到远程库
-git pull 远程地址别名 远程分支 #拉取
-git clone  https://github.com/NilPointerError/test.git #克隆远程库到本地（不需要登录）
-````
 
 - ssh免密登录
 
